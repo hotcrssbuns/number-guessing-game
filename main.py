@@ -1,6 +1,7 @@
 import random
 import os
 import time
+import sys
 
 chances = None
 guesses = None
@@ -80,7 +81,16 @@ def main():
     print(f"You have chosen {choice} difficulty!")
     input("\nPress Enter to begin...")
 
-    game_loop(chances)
+    while True:
+        print("\nWould you like to play another round? (y/n)")
+        round_choice = input("\n> ").strip().lower()
+        if round_choice == "y":
+            game_loop(chances)
+        if round_choice == "n":
+            print("Thank you for playing!")
+            sys.exit()
+        else:
+            print("Type Y or N")
 
 
 main()
