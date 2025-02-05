@@ -5,10 +5,8 @@ import sys
 
 chances = None
 guesses = None
-easy_hs = None
-medium_hs = None
-hard_hs = None
 timer = None
+high_score = 0
 
 
 def clear_screen():
@@ -46,7 +44,7 @@ def game_loop(chances):
             print(
                 f"It took you {total_guesses} guesses and {elapsed_time:.2f} seconds to get it right!"
             )
-            break
+            return elapsed_time
 
     if guesses <= 0:
         clear_screen()
@@ -55,6 +53,8 @@ def game_loop(chances):
 
 
 def main():
+
+    global high_score
 
     print("Welcome to the Number Guessing Game!")
     print("I'm thinking of a number between 1 and 100")
@@ -80,17 +80,25 @@ def main():
     clear_screen()
     print(f"You have chosen {choice} difficulty!")
     input("\nPress Enter to begin...")
+    first_round = True
 
     while True:
-        print("\nWould you like to play another round? (y/n)")
-        round_choice = input("\n> ").strip().lower()
-        if round_choice == "y":
-            game_loop(chances)
-        if round_choice == "n":
-            print("Thank you for playing!")
-            sys.exit()
-        else:
-            print("Type Y or N")
+        if first_round == True:
+            elapsed_time = game_loop(chances)
+            first_round = False
+        if first_round == False:
+            if high_score == 0 or elapsed_time < high_score:
+                high_score = elapsed_time
+            print(f"Your high score is {elapsed_time:.2f}")
+            print("\nWould you like to play another round? (y/n)")
+            round_choice = input("\n> ").strip().lower()
+            if round_choice == "y":
+                game_loop(chances)
+            if round_choice == "n":
+                print("Thank you for playing!")
+                sys.exit()
+            else:
+                pass
 
 
 main()
