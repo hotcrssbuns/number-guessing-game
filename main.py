@@ -1,5 +1,13 @@
 import random
 import os
+import time
+
+chances = None
+guesses = None
+easy_hs = None
+medium_hs = None
+hard_hs = None
+timer = None
 
 
 def clear_screen():
@@ -9,13 +17,43 @@ def clear_screen():
         os.system("clear")
 
 
+def game_loop(chances):
+    # Begin Game Loop
+    clear_screen()
+    start_time = time.time()
+    number = random.randint(1, 100)
+    guesses = chances
+    while guesses > 0:
+        while True:
+            try:
+                guess = int(input("Guess: "))
+                break
+            except ValueError:
+                print("Try inputting a value!")
+        guesses -= 1
+
+        if guess > number:
+            print(f"Incorrect! The number is less than {guess}")
+        elif guess < number:
+            print(f"Incorrect! The number is greater than {guess}")
+        else:
+            clear_screen()
+            end_time = time.time()
+            elapsed_time = end_time - start_time
+            print("You got it correct!")
+            total_guesses = chances - guesses
+            print(
+                f"It took you {total_guesses} guesses and {elapsed_time:.2f} seconds to get it right!"
+            )
+            break
+
+    if guesses <= 0:
+        clear_screen()
+        print("You lost!")
+        print(f"The number is {number}")
+
+
 def main():
-    chances = None
-    guesses = None
-    easy_hs = []
-    medium_hs = []
-    hard_hs = []
-    timer = None
 
     print("Welcome to the Number Guessing Game!")
     print("I'm thinking of a number between 1 and 100")
@@ -42,28 +80,7 @@ def main():
     print(f"You have chosen {choice} difficulty!")
     input("\nPress Enter to begin...")
 
-    # Begin Game Loop
-    clear_screen()
-    number = random.randint(1, 100)
-    guesses = chances
-
-    while guesses > 0:
-        guess = int(input("Guess: "))
-        guesses -= 1
-
-        if guess > number:
-            print(f"Lower!")
-        elif guess < number:
-            print(f"Higher!")
-        else:
-            clear_screen()
-            print("You got it correct!")
-            total_guesses = chances - guesses
-            print(f"It took you {total_guesses} guesses to get it right!")
-            break
-
-    if guesses <= 0:
-        print()
+    game_loop(chances)
 
 
 main()
